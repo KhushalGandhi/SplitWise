@@ -7,12 +7,12 @@ import (
 )
 
 func CreateSpend(c *fiber.Ctx) error {
-	var spend models.SpendRequest
+	var spend *models.CreateSpendRequest
 	if err := c.BodyParser(&spend); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request"})
 	}
 
-	if err := services.CreateSpend(&spend); err != nil {
+	if err := services.CreateSpend(spend); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not create spend"})
 	}
 	return c.JSON(fiber.Map{"message": "Spend added successfully"})

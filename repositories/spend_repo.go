@@ -14,3 +14,7 @@ func GetSpendsByGroupID(groupID uint) ([]models.Spend, error) {
 	err := database.DB.Where("group_id = ?", groupID).Find(&spends).Error
 	return spends, err
 }
+
+func CreateShare(share *models.Share) error {
+	return database.DB.Create(&share).Error
+}

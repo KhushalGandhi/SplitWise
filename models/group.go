@@ -12,3 +12,8 @@ type GroupRequest struct {
 	Name      string `json:"name"`
 	CreatorID uint   `json:"creator_id"`
 }
+
+type GroupMember struct {
+	GroupId uint `json:"group_id"`
+	UserId  uint `json:"user_id"`
+}
