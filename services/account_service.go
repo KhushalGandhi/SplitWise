@@ -14,11 +14,11 @@ func RegisterAccount(account *models.AccountRequest) error {
 	baseModel := models.Account{
 		Model:    gorm.Model{},
 		ID:       0,
-		Name:     "",
-		Email:    "",
-		Password: "",
+		Name:     account.Name,
+		Email:    account.Email,
+		Password: account.Password,
 	}
-	return repositories.CreateAccount(account)
+	return repositories.CreateAccount(&baseModel)
 }
 
 func Authenticate(email, password string) (models.Account, error) {
