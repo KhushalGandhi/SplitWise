@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"errors"
+	"gorm.io/gorm"
 	"splitwise/db"
 	"splitwise/models"
 )
@@ -24,9 +25,12 @@ func GetUnsettledSpendsByGroupID(groupID uint) ([]models.Spend, error) {
 	return spends, nil
 }
 
-func GetGroupMemberCount(groupID uint) (int, error) {
+func GetGroupMemberCount(groupID string) (int, error) {
 	var count int64
-	if err := database.DB.Model(&models.GroupMember{}).Where("group_id = ?", groupID).Count(&count).Error; err != nil {
+	if err := database.DB.Model(&models.User{}).
+		Where("group_id = ?", groupID).
+		Distinct("email").
+		Count(&count).Error; err != nil {
 		return 0, err
 	}
 	return int(count), nil
@@ -68,4 +72,27 @@ func AddUserToGroup(user models.User) error {
 
 	// Add user to the group
 	return database.DB.Create(&user).Error
+}
+
+func IsUserInGroup(userID uint, groupID string) (bool, error) {
+	var user models.User
+	if err := database.DB.Where("id = ? AND group_id = ?", userID, groupID).First(&user).Error; err != nil {
+		// If record is not found, return false
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
+}
+
+func IsEmailInGroup(email string, groupID string) (bool, error) {
+	var user models.User
+	if err := database.DB.Where("email = ? AND group_id = ?", email, groupID).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
 }

@@ -19,3 +19,7 @@ func GenerateID() string {
 func GenerateGroupID() string {
 	return "Group_" + GenerateID()
 }
+
+func GenerateSpendID() string {
+	return "Spend_" + GenerateID()
+}

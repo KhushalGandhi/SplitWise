@@ -7,7 +7,14 @@ import (
 )
 
 func CreateSpend(c *fiber.Ctx) error {
-	var spend *models.CreateSpendRequest
+
+	groupId := c.Params("id")
+	userId := c.Locals("userID").(uint)
+
+	var spend models.CreateSpendRequest
+
+	spend.GroupID = groupId
+	spend.UserID = userId
 	if err := c.BodyParser(&spend); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request"})
 	}

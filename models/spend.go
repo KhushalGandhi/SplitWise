@@ -11,17 +11,17 @@ import "time"
 //}
 
 type CreateSpendRequest struct {
-	GroupID     uint             `json:"group_id"`
-	UserID      uint             `json:"user_id"`
-	Amount      float64          `json:"amount"`
-	Description string           `json:"description"`
-	SplitType   string           `json:"split_type"`   // "equal", "exact", "percentage"
-	SplitValues map[uint]float64 `json:"split_values"` // Key: UserID, Value: Split Amount/Percentage
+	GroupID     string             `json:"group_id"`
+	UserID      uint               `json:"user_id"`
+	Amount      float64            `json:"amount"`
+	Description string             `json:"description"`
+	SplitType   string             `json:"split_type"`   // "equal", "exact", "percentage"
+	SplitValues map[string]float64 `json:"split_values"` // Key: UserID, Value: Split Amount/Percentage
 }
 
 type Spend struct {
 	ID          uint    `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	GroupID     uint    `gorm:"group_id" json:"group_id"`
+	GroupID     string  `gorm:"group_id" json:"group_id"`
 	UserID      uint    `gorm:"user_id" json:"user_id"`
 	Amount      float64 `gorm:"amount" json:"amount"`
 	Description string  `gorm:"description" json:"description"`

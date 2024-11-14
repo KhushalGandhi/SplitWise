@@ -8,18 +8,18 @@ import (
 
 func SetupRoutes(app *fiber.App) {
 	// Account Routes
-	app.Post("/api/accounts/register", handlers.RegisterAccount)
-	app.Post("/api/accounts/login", handlers.Login)
+	app.Post("/api/accounts/register", handlers.RegisterAccount) // done
+	app.Post("/api/accounts/login", handlers.Login)              // done
 
 	// Group Routes (Protected)
 	group := app.Group("/api/groups", middleware.JWTAuth)
-	group.Post("/", handlers.CreateGroup)
+	group.Post("/", handlers.CreateGroup)                // done
 	group.Delete("/:id", handlers.DeleteGroup)           // Delete group route
-	group.Post("/:id/add-user", handlers.AddUserToGroup) // Add user to group route
+	group.Post("/:id/add-user", handlers.AddUserToGroup) // Add user to group route  // done
 
 	// Spend Routes (Protected)
 	spend := app.Group("/api/spends", middleware.JWTAuth)
-	spend.Post("/", handlers.CreateSpend)
+	spend.Post("/:id", handlers.CreateSpend) //done
 
 	// Balance Routes (Protected)
 	balance := app.Group("/api/balance", middleware.JWTAuth)
