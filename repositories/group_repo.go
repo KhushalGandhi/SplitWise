@@ -11,13 +11,15 @@ func CreateGroup(group *models.Group) error {
 	return database.DB.Create(group).Error
 }
 
-func GetGroupByID(id uint) (models.Group, error) {
-	var group models.Group
-	err := database.DB.First(&group, id).Error
-	return group, err
+func GetGroupByID(id string) (*models.Group, error) {
+	var group *models.Group
+	if err := database.DB.Where("group_id = ? ", id).Find(&group).Error; err != nil {
+		return nil, err
+	}
+	return group, nil
 }
 
-func GetUnsettledSpendsByGroupID(groupID uint) ([]models.Spend, error) {
+func GetUnsettledSpendsByGroupID(groupID string) ([]models.Spend, error) {
 	var spends []models.Spend
 	if err := database.DB.Where("group_id = ? AND status = ?", groupID, "pending").Find(&spends).Error; err != nil {
 		return nil, err

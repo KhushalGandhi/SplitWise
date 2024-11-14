@@ -42,7 +42,7 @@ func CreateGroup(group *models.GroupRequest) error {
 //	return repositories.GetGroupByID(groupID)
 //}
 
-func CanDeleteGroup(groupID, userID uint) error {
+func CanDeleteGroup(groupID string, userID uint) error {
 	group, err := repositories.GetGroupByID(groupID)
 	if err != nil {
 		return err
@@ -63,7 +63,7 @@ func CanDeleteGroup(groupID, userID uint) error {
 	return nil
 }
 
-func CanAddUserToGroup(groupID, userID uint) error {
+func CanAddUserToGroup(groupID string, userID uint) error {
 	group, err := repositories.GetGroupByID(groupID)
 	if err != nil {
 		return err
@@ -76,7 +76,7 @@ func CanAddUserToGroup(groupID, userID uint) error {
 	return nil
 }
 
-func DeleteGroup(groupID, userID uint) error {
+func DeleteGroup(groupID string, userID uint) error {
 	// Ensure only the creator can delete and all spends are settled
 	if err := CanDeleteGroup(groupID, userID); err != nil {
 		return err
@@ -87,7 +87,7 @@ func DeleteGroup(groupID, userID uint) error {
 		return err
 	}
 
-	return repositories.DeleteGroup(&group)
+	return repositories.DeleteGroup(group)
 }
 
 func AddUserToGroup(creatorID uint, req models.AddUserToGroupRequest) error {

@@ -4,7 +4,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"splitwise/models"
 	"splitwise/services"
-	"strconv"
 )
 
 func CreateGroup(c *fiber.Ctx) error {
@@ -26,18 +25,15 @@ func CreateGroup(c *fiber.Ctx) error {
 }
 
 func DeleteGroup(c *fiber.Ctx) error {
-	groupID, err := strconv.Atoi(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid group ID"})
-	}
+	groupID := c.Params("id")
 
 	userID := c.Locals("userID").(uint)
 
-	if err := services.CanDeleteGroup(uint(groupID), userID); err != nil {
+	if err := services.CanDeleteGroup(groupID, userID); err != nil {
 		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	if err := services.DeleteGroup(uint(groupID), userID); err != nil {
+	if err := services.DeleteGroup(groupID, userID); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not delete group"})
 	}
 
