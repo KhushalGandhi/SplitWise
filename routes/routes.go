@@ -14,7 +14,7 @@ func SetupRoutes(app *fiber.App) {
 	// Group Routes (Protected)
 	group := app.Group("/api/groups", middleware.JWTAuth)
 	group.Post("/", handlers.CreateGroup)                // done
-	group.Delete("/:id", handlers.DeleteGroup)           // Delete group route
+	group.Delete("/:id", handlers.DeleteGroup)           // ye rh gya us test case ke sath      // Delete group route
 	group.Post("/:id/add-user", handlers.AddUserToGroup) // Add user to group route  // done
 
 	// Spend Routes (Protected)
@@ -23,5 +23,8 @@ func SetupRoutes(app *fiber.App) {
 
 	// Balance Routes (Protected)
 	balance := app.Group("/api/balance")
-	balance.Get("/:group_id", handlers.GetRemainingBalance)
+	balance.Get("/:group_id", handlers.GetRemainingBalance) // done
+
+	balance.Get(":group_id/user", middleware.JWTAuth, handlers.GetRemainingBalanceforUser) // done
+
 }

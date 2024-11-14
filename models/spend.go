@@ -32,9 +32,9 @@ type Spend struct {
 
 type Share struct {
 	ID        uint      `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	SpendID   uint      `json:"spend_id"`
-	UserID    uint      `json:"user_id"`
-	Amount    float64   `json:"amount"`
+	SpendID   uint      `gorm:"column:spend_id" json:"spend_id"`
+	UserID    uint      `gorm:"column:user_id" json:"user_id"`
+	Amount    float64   `gorm:"amount" json:"amount"`
 	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
