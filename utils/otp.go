@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/segmentio/ksuid"
 	"math/rand"
 	"time"
 )
@@ -8,4 +9,9 @@ import (
 func GenerateOTP() int {
 	rand.Seed(time.Now().UnixNano())
 	return 100000 + rand.Intn(900000) // generates a 6-digit OTP
+}
+
+func GenerateID() string {
+	//"github.com/segmentio/ksuid"
+	return ksuid.New().String()
 }

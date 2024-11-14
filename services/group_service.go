@@ -2,16 +2,17 @@ package services
 
 import (
 	"errors"
-	"gorm.io/gorm"
 	"splitwise/models"
 	"splitwise/repositories"
+	"time"
 )
 
 func CreateGroup(group *models.GroupRequest) error {
 	baseModel := models.Group{
-		Model:     gorm.Model{},
 		Name:      group.Name,
 		CreatorID: group.CreatorID,
+		CreatedAt: time.Time{},
+		UpdatedAt: time.Time{},
 	}
 	return repositories.CreateGroup(&baseModel)
 }
