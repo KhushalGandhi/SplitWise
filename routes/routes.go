@@ -22,6 +22,6 @@ func SetupRoutes(app *fiber.App) {
 	spend.Post("/:id", handlers.CreateSpend) //done
 
 	// Balance Routes (Protected)
-	balance := app.Group("/api/balance", middleware.JWTAuth)
+	balance := app.Group("/api/balance")
 	balance.Get("/:group_id", handlers.GetRemainingBalance)
 }

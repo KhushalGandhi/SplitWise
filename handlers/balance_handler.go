@@ -3,16 +3,13 @@ package handlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"splitwise/services"
-	"strconv"
 )
 
 func GetRemainingBalance(c *fiber.Ctx) error {
-	groupID, err := strconv.Atoi(c.Params("group_id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid group ID"})
-	}
+	groupID := c.Params("group_id")
+	//userId := c.Locals("userId").(uint)
 
-	balance, err := services.CalculateRemainingBalance(uint(groupID))
+	balance, err := services.CalculateRemainingBalance(groupID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not fetch balance"})
 	}
