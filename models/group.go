@@ -6,6 +6,7 @@ import (
 
 type Group struct {
 	ID        uint      `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	GroupId   string    `gorm:"group_id" json:"group_id"`
 	Name      string    `gorm:"column:name" json:"name"`
 	CreatorID uint      `gorm:"creator_id" json:"creator_id"`
 	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`

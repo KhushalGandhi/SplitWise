@@ -45,9 +45,9 @@ func DeleteGroup(group *models.Group) error {
 	return database.DB.Delete(group).Error
 }
 
-func IsGroupCreator(groupID string, userID string) (bool, error) {
+func IsGroupCreator(groupID string, userID uint) (bool, error) {
 	var group models.Group
-	err := database.DB.Where("id = ? AND creator_id = ?", groupID, userID).First(&group).Error
+	err := database.DB.Where("group_id = ? AND creator_id = ?", groupID, userID).First(&group).Error
 	if err != nil {
 		if err.Error() == "record not found" {
 			return false, nil

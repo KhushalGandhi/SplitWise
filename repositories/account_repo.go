@@ -22,3 +22,12 @@ func GetAccountByID(userID uint) (*models.Account, error) {
 	}
 	return &account, nil
 }
+
+func GetAccountByNameAndEmail(email string, name string) (*models.Account, error) {
+	var account models.Account
+	if err := database.DB.Where("email ILIKE ? AND name ILIKE ?", email, name).First(&account).Error; err != nil {
+		return nil, err
+	}
+	return &account, nil
+
+}

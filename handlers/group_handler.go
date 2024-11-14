@@ -45,15 +45,19 @@ func DeleteGroup(c *fiber.Ctx) error {
 }
 
 func AddUserToGroup(c *fiber.Ctx) error {
+
+	// Retrieve the user ID from the JWT claims (e.g., using middleware or context)
+	creatorID := c.Locals("userID").(uint) // assuming user_id was stored in Locals during JWT auth
+
+	groupID := c.Params("id")
+
 	var req models.AddUserToGroupRequest
+	req.GroupID = groupID
 
 	// Parse and validate request
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request"})
 	}
-
-	// Retrieve the user ID from the JWT claims (e.g., using middleware or context)
-	creatorID := c.Locals("user_id").(string) // assuming user_id was stored in Locals during JWT auth
 
 	// Call service to add user to the group
 	err := services.AddUserToGroup(creatorID, req)

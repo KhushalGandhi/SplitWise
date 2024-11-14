@@ -9,8 +9,11 @@ import (
 )
 
 func CreateGroup(group *models.GroupRequest) error {
+	groupId := utils.GenerateGroupID()
+
 	baseModel := models.Group{
 		Name:      group.Name,
+		GroupId:   groupId,
 		CreatorID: group.CreatorID,
 		CreatedAt: time.Time{},
 		UpdatedAt: time.Time{},
@@ -25,7 +28,7 @@ func CreateGroup(group *models.GroupRequest) error {
 	}
 
 	user := models.User{
-		GroupID:   utils.GenerateGroupID(),
+		GroupID:   groupId,
 		Name:      group.Name,
 		Email:     creatorAccount.Email,
 		CreatedAt: time.Time{},
@@ -87,14 +90,21 @@ func DeleteGroup(groupID, userID uint) error {
 	return repositories.DeleteGroup(&group)
 }
 
-func AddUserToGroup(creatorID string, req models.AddUserToGroupRequest) error {
+func AddUserToGroup(creatorID uint, req models.AddUserToGroupRequest) error {
 	// Check if the user is the creator of the group
+	//fmt.Println(creatorID)
+	//fmt.Println(req.GroupID)
 	isCreator, err := repositories.IsGroupCreator(req.GroupID, creatorID)
 	if err != nil {
 		return err
 	}
 	if !isCreator {
 		return errors.New("only the group creator can add users to the group")
+	}
+
+	_, err = repositories.GetAccountByNameAndEmail(req.Email, req.Name)
+	if err != nil {
+		return errors.New("not present email and name")
 	}
 
 	// Prepare user data to add to group
