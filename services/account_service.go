@@ -19,6 +19,7 @@ func RegisterAccount(account *models.AccountRequest) error {
 		UpdatedAt: time.Time{},
 	}
 	return repositories.CreateAccount(&baseModel)
+
 }
 
 func Authenticate(email, password string) (models.Account, error) {

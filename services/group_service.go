@@ -4,6 +4,7 @@ import (
 	"errors"
 	"splitwise/models"
 	"splitwise/repositories"
+	"splitwise/utils"
 	"time"
 )
 
@@ -14,12 +15,29 @@ func CreateGroup(group *models.GroupRequest) error {
 		CreatedAt: time.Time{},
 		UpdatedAt: time.Time{},
 	}
-	return repositories.CreateGroup(&baseModel)
+	if err := repositories.CreateGroup(&baseModel); err != nil {
+		return err
+	}
+
+	creatorAccount, err := repositories.GetAccountByID(group.CreatorID)
+	if err != nil {
+		return err
+	}
+
+	user := models.User{
+		GroupID:   utils.GenerateGroupID(),
+		Name:      group.Name,
+		Email:     creatorAccount.Email,
+		CreatedAt: time.Time{},
+		UpdatedAt: time.Time{},
+	}
+
+	return repositories.AddUserToGroup(user)
 }
 
-func GetGroupDetails(groupID uint) (models.Group, error) {
-	return repositories.GetGroupByID(groupID)
-}
+//func GetGroupDetails(groupID uint) (models.Group, error) {
+//	return repositories.GetGroupByID(groupID)
+//}
 
 func CanDeleteGroup(groupID, userID uint) error {
 	group, err := repositories.GetGroupByID(groupID)

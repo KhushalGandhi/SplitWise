@@ -15,3 +15,7 @@ func GenerateID() string {
 	//"github.com/segmentio/ksuid"
 	return ksuid.New().String()
 }
+
+func GenerateGroupID() string {
+	return "Group_" + GenerateID()
+}
