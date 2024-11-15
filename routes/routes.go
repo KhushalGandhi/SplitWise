@@ -7,6 +7,9 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
+
+	app.Use(middleware.Logging)
+
 	// Account Routes
 	app.Post("/api/accounts/register", handlers.RegisterAccount) // done
 	app.Post("/api/accounts/login", handlers.Login)              // done

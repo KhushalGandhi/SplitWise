@@ -14,7 +14,6 @@ func Logging(c *fiber.Ctx) error {
 		Endpoint: c.Path(),
 		Method:   c.Method(),
 		Status:   c.Response().StatusCode(),
-		UserID:   c.Locals("userID").(uint),
 	}
 
 	if err := repositories.CreateLog(&logEntry); err != nil {
