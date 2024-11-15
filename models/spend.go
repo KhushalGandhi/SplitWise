@@ -27,7 +27,9 @@ type Spend struct {
 	Description string  `gorm:"column:description" json:"description"`
 	SplitType   string  `gorm:"column:split_type" json:"split_type"` // "equal", "exact", "percentage"
 	Status      string  `gorm:"column:status" json:"status"`         // "pending" or "settled"
-	Shares      []Share `gorm:"column:shares" gorm:"foreignKey:SpendID"`
+	Shares      []Share `gorm:"foreignKey:SpendID"`
+
+	//Shares      []Share `gorm:"column:shares" gorm:"foreignKey:SpendID"`
 }
 
 type Share struct {

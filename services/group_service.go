@@ -11,8 +11,13 @@ import (
 func CreateGroup(group *models.GroupRequest) error {
 	groupId := utils.GenerateGroupID()
 
+	userInfo, err := repositories.GetAccountByID(group.CreatorID)
+	if err != nil {
+		return err
+	}
+
 	baseModel := models.Group{
-		Name:      group.Name,
+		Name:      userInfo.Name,
 		GroupId:   groupId,
 		CreatorID: group.CreatorID,
 		CreatedAt: time.Time{},

@@ -100,6 +100,7 @@ func CreateSpend(req models.CreateSpendRequest) error {
 			SpendID: spend.ID,
 			UserID:  userID,
 			Amount:  amount,
+			Status:  "pending",
 		}
 		if err := repositories.CreateShare(&share); err != nil {
 			return err
