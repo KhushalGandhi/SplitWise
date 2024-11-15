@@ -56,3 +56,23 @@ func GetSharesBySpendIDsAndUserID(spendIDs []uint, userID uint) ([]models.Share,
 func CreateShare(share *models.Share) error {
 	return database.DB.Create(&share).Error
 }
+
+func GetShareBySpendIDAndUserID(spendID, userID uint) (models.Share, error) {
+	var share models.Share
+	err := database.DB.Where("spend_id = ? AND user_id = ?", spendID, userID).First(&share).Error
+	return share, err
+}
+
+func GetSpendByID(spendID uint) (models.Spend, error) {
+	var spend models.Spend
+	err := database.DB.Where("id = ?", spendID).First(&spend).Error
+	return spend, err
+}
+
+func UpdateShare(share *models.Share) error {
+	return database.DB.Save(share).Error
+}
+
+func UpdateSpend(spend *models.Spend) error {
+	return database.DB.Save(spend).Error
+}

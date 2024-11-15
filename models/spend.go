@@ -21,20 +21,21 @@ type CreateSpendRequest struct {
 
 type Spend struct {
 	ID          uint    `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	GroupID     string  `gorm:"group_id" json:"group_id"`
-	UserID      uint    `gorm:"user_id" json:"user_id"`
-	Amount      float64 `gorm:"amount" json:"amount"`
-	Description string  `gorm:"description" json:"description"`
-	SplitType   string  `gorm:"split_type" json:"split_type"` // "equal", "exact", "percentage"
-	Status      string  `gorm:"status" json:"status"`         // "pending" or "settled"
-	Shares      []Share `gorm:"shares" gorm:"foreignKey:SpendID"`
+	GroupID     string  `gorm:"column:group_id" json:"group_id"`
+	UserID      uint    `gorm:"column:user_id" json:"user_id"`
+	Amount      float64 `gorm:"column:amount" json:"amount"`
+	Description string  `gorm:"column:description" json:"description"`
+	SplitType   string  `gorm:"column:split_type" json:"split_type"` // "equal", "exact", "percentage"
+	Status      string  `gorm:"column:status" json:"status"`         // "pending" or "settled"
+	Shares      []Share `gorm:"column:shares" gorm:"foreignKey:SpendID"`
 }
 
 type Share struct {
 	ID        uint      `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
 	SpendID   uint      `gorm:"column:spend_id" json:"spend_id"`
 	UserID    uint      `gorm:"column:user_id" json:"user_id"`
-	Amount    float64   `gorm:"amount" json:"amount"`
+	Amount    float64   `gorm:"column:amount" json:"amount"`
+	Status    string    `gorm:"column:status" json:"status"`
 	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
 }

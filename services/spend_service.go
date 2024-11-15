@@ -109,6 +109,41 @@ func CreateSpend(req models.CreateSpendRequest) error {
 	return nil
 }
 
+func MarkShareAsPaid(spendID, userID uint) error {
+	// Fetch the share for the specific spend and user
+	share, err := repositories.GetShareBySpendIDAndUserID(spendID, userID)
+	if err != nil {
+		return err
+	}
+
+	if share.Status == "paid" {
+		return errors.New("this share is already marked as paid")
+	}
+
+	// Mark the share as paid
+	share.Status = "paid"
+	if err := repositories.UpdateShare(&share); err != nil {
+		return err
+	}
+
+	// Update the spend amount
+	spend, err := repositories.GetSpendByID(spendID)
+	if err != nil {
+		return err
+	}
+
+	if spend.Amount < share.Amount {
+		return errors.New("share amount exceeds remaining spend amount")
+	}
+
+	spend.Amount -= share.Amount // Deduct the paid share amount from the spend
+	if err := repositories.UpdateSpend(&spend); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 //func GetGroupSpends(groupID uint) ([]models.Spend, error) {
 //	return repositories.GetSpendsByGroupID(groupID)
 //}
